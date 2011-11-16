@@ -11,6 +11,7 @@ Modifying the CoffeeScript version
 2. Optionally, for using the [Vows](http://vowsjs.org)-based test suite: `npm install -g vows`
 3. After modifying the source: `cake build`
 4. To run the Vows-based test suite, if you installed Vows in (2): `npm test`
+6. To run the full tests, just `./run.sh` as usual.
 
 Coding Challenge: The Luhny Bin
 ===============================
