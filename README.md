@@ -1,7 +1,7 @@
 Running the CoffeeScript version
 ================================
 1. Install [node](http://nodejs.org/), v0.6.1. I find using the [n](https://github.com/visionmedia/n) 
-version manager to be the easiest way to do install node versions, but any way will do.
+version manager to be the easiest way to install node versions, but any way will do.
 2. `./run.sh`
 
 Modifying the CoffeeScript version
