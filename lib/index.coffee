@@ -38,9 +38,8 @@ hideFrom = (string, nthDigit, num) ->
 	digitRegex = /\d/
 	for index in [0...string.length]
 		currChar = string.charAt(index)
-		if digitRegex.test currChar
-			if n >= nthDigit && n < nthDigit + num
-				currChar = 'X'
+		if n < nthDigit + num && digitRegex.test currChar
+			currChar = 'X' if n >= nthDigit
 			n++
 		output += currChar
 
@@ -74,8 +73,7 @@ mask = (creditString) ->
 					alreadyHidden += amountToHide
 					nMoreHidden += amountToHide
 					break
-		if nMoreHidden > 0
-			nMoreHidden--
+		nMoreHidden-- if nMoreHidden > 0
 	
 	creditString
 
