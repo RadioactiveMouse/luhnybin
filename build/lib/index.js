@@ -49,7 +49,7 @@ hideFrom = function(string, nthDigit, num) {
   for (index = 0, _ref = string.length; 0 <= _ref ? index < _ref : index > _ref; 0 <= _ref ? index++ : index--) {
     currChar = string.charAt(index);
     currCharCode = string.charCodeAt(index);
-    if (n < nthDigit + num && currCharCode <= LARGEST_DIGIT_CODE && currCharCode >= SMALLEST_DIGIT_CODE) {
+    if (currCharCode <= LARGEST_DIGIT_CODE && currCharCode >= SMALLEST_DIGIT_CODE && n < nthDigit + num) {
       if (n >= nthDigit) currChar = 'X';
       n++;
     }

@@ -42,7 +42,7 @@ hideFrom = (string, nthDigit, num) ->
 	for index in [0...string.length]
 		currChar = string.charAt index
 		currCharCode = string.charCodeAt index
-		if n < nthDigit + num && currCharCode <= LARGEST_DIGIT_CODE && currCharCode >= SMALLEST_DIGIT_CODE
+		if currCharCode <= LARGEST_DIGIT_CODE && currCharCode >= SMALLEST_DIGIT_CODE && n < nthDigit + num
 			currChar = 'X' if n >= nthDigit
 			n++
 		output += currChar
