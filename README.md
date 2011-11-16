@@ -2,14 +2,16 @@ Running the CoffeeScript version
 ================================
 1. Install [node](http://nodejs.org/), v0.6.1. I find using the [n](https://github.com/visionmedia/n) 
 version manager to be the easiest way to do install node versions, but any way will do.
-2. Optionally, install the [CoffeeScript](http://jashkenas.github.com/coffee-script/) compiler, v1.1.3. 
+2. `./run.sh`
+
+Modifying the CoffeeScript version
+==================================
+1. Install the [CoffeeScript](http://jashkenas.github.com/coffee-script/) compiler, v1.1.3. 
 The easiest way to do this is by installing and using the [npm](http://npmjs.org/)
-package manager, but since `mask.sh` uses the compiled JS I've placed in the build folder, this 
-step is only necessary if you want to modify and recompile the code.
-3. Optionally, install [vows](http://vowsjs.org), v0.5.13. This is only necessary if you plan on
-running the Vows-based tests I made while writing the Luhny Bin solution, or using the CoffeeScript
+package manager.
+2. Optionally, install [vows](http://vowsjs.org), v0.5.13. This is only necessary if you plan on
+running the Vows-based tests I made while writing the Luhny Bin solution, or reusing the CoffeeScript
 Cakefile I used to compile everything. The easiest way to do this is once again through [npm](http://npmjs.org).
-4. `./run.sh`
 
 Coding Challenge: The Luhny Bin
 ===============================
