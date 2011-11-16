@@ -9,7 +9,7 @@
   },
   "main": "index.js",
   "scripts": {
-    "test": "vows build/tests/ --spec",
+    "test": "vows build/tests/",
 		"build": "cake build"
   },
   "engines": {

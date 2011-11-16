@@ -11,16 +11,16 @@ LARGEST_DIGIT_CODE = '9'.charCodeAt(0);
 /*
  luhny
  -----
- takes a string composed entirely of digits.
+ takes an array of single-character strings of digits.
  returns true if the string passes the Luhn check, false otherwise.
 */
 
-luhny = function(digitString) {
+luhny = function(digits) {
   var digit, index, odd, sum, _ref;
   sum = 0;
   odd = false;
-  for (index = _ref = digitString.length - 1; _ref <= 0 ? index <= 0 : index >= 0; _ref <= 0 ? index++ : index--) {
-    digit = digitString.charCodeAt(index) - SMALLEST_DIGIT_CODE;
+  for (index = _ref = digits.length - 1; _ref <= 0 ? index <= 0 : index >= 0; _ref <= 0 ? index++ : index--) {
+    digit = digits[index].charCodeAt(0) - SMALLEST_DIGIT_CODE;
     if (odd) {
       digit *= 2;
       if (digit >= 10) {
@@ -37,49 +37,50 @@ luhny = function(digitString) {
 /*
  hideFrom
  --------
- takes a string, the nth digit to start hiding, and the number of digits to hide.
-
- returns the same string, except that `num` digits from the `nthDigit` are overwritten with Xs.
+ takes an array, the nth digit to start hiding, and the number of digits to hide.
+ return a clone of the array, except that `num` digits from the `nthDigit` are overwritten with Xs.
 */
 
-hideFrom = function(string, nthDigit, num) {
-  var currChar, currCharCode, index, n, output, _ref;
-  output = '';
+hideFrom = function(array, nthDigit, num) {
+  var clone, code, index, n, _ref;
   n = 0;
-  for (index = 0, _ref = string.length; 0 <= _ref ? index < _ref : index > _ref; 0 <= _ref ? index++ : index--) {
-    currChar = string.charAt(index);
-    currCharCode = string.charCodeAt(index);
-    if (currCharCode <= LARGEST_DIGIT_CODE && currCharCode >= SMALLEST_DIGIT_CODE && n < nthDigit + num) {
-      if (n >= nthDigit) currChar = 'X';
+  clone = array.slice(0);
+  for (index = 0, _ref = array.length; 0 <= _ref ? index < _ref : index > _ref; 0 <= _ref ? index++ : index--) {
+    if (n >= nthDigit + num) return clone;
+    code = array[index].charCodeAt(0);
+    if (code >= SMALLEST_DIGIT_CODE && code <= LARGEST_DIGIT_CODE) {
+      if (n >= nthDigit) clone[index] = 'X';
       n++;
     }
-    output += currChar;
   }
-  return output;
+  return clone;
 };
 
 /*
  mask
  ----
- takes a string composed of digits, dashes, and spaces.
- returns the same string, except that any potentially valid credit card numbers are masked with Xs.
+ takes an array of strings composed of digits, dashes, and spaces.
+ returns the a clone of the array, except that any potentially valid credit card numbers are masked with Xs.
 */
 
-mask = function(creditString) {
+mask = function(creditArray) {
   var alreadyHidden, amountToHide, delta, digits, nMoreHidden, nthDigit, startingPoint, subdigits, _ref, _ref2;
-  digits = creditString.replace(/\-/g, '').replace(/\s/g, '');
-  if (digits.length < MIN_CREDIT_LENGTH) return creditString;
-  subdigits = '';
+  creditArray = creditArray.slice(0);
+  digits = creditArray.filter(function(character) {
+    return /\d/.test(character);
+  });
+  if (digits.length < MIN_CREDIT_LENGTH) return creditArray;
+  subdigits = [];
   alreadyHidden = 0;
   nMoreHidden = 0;
   for (nthDigit = 0, _ref = digits.length - MIN_CREDIT_LENGTH; 0 <= _ref ? nthDigit <= _ref : nthDigit >= _ref; 0 <= _ref ? nthDigit++ : nthDigit--) {
     for (delta = _ref2 = MAX_CREDIT_LENGTH - MIN_CREDIT_LENGTH; _ref2 <= 0 ? delta <= 0 : delta >= 0; _ref2 <= 0 ? delta++ : delta--) {
       if (digits.length - nthDigit >= MIN_CREDIT_LENGTH + delta) {
-        subdigits = digits.substr(nthDigit, MIN_CREDIT_LENGTH + delta);
+        subdigits = digits.slice(nthDigit, nthDigit + MIN_CREDIT_LENGTH + delta);
         if (luhny(subdigits)) {
           amountToHide = subdigits.length - nMoreHidden;
           startingPoint = nthDigit - alreadyHidden + nMoreHidden;
-          creditString = hideFrom(creditString, startingPoint, amountToHide);
+          creditArray = hideFrom(creditArray, startingPoint, amountToHide);
           alreadyHidden += amountToHide;
           nMoreHidden += amountToHide;
           break;
@@ -88,36 +89,36 @@ mask = function(creditString) {
     }
     if (nMoreHidden > 0) nMoreHidden--;
   }
-  return creditString;
+  return creditArray;
 };
 
 /*
  hideCreditCards
  ---------------
  takes a string.
- returns the same string, except that any potentially valid credit card numbers are hidden.
+ returns a clone of the string, except that any potentially valid credit card numbers are hidden.
 */
 
 hideCreditCards = function(input) {
   var currChar, nthChar, output, potentialCardStack, potentialRegex, pumpCardStack, _ref;
-  output = '';
-  potentialCardStack = '';
+  output = [];
+  potentialCardStack = [];
   potentialRegex = /[\d\-\s]/;
   pumpCardStack = function() {
-    output += mask(potentialCardStack);
-    return potentialCardStack = '';
+    output = output.concat(mask(potentialCardStack));
+    return potentialCardStack = [];
   };
   for (nthChar = 0, _ref = input.length; 0 <= _ref ? nthChar < _ref : nthChar > _ref; 0 <= _ref ? nthChar++ : nthChar--) {
     currChar = input.charAt(nthChar);
     if (potentialRegex.test(currChar)) {
-      potentialCardStack += currChar;
+      potentialCardStack.push(currChar);
     } else {
       if (potentialCardStack.length > 0) pumpCardStack();
-      output += currChar;
+      output.push(currChar);
     }
   }
   if (potentialCardStack.length > 0) pumpCardStack();
-  return output;
+  return output.join('');
 };
 
 /*
