@@ -16,19 +16,13 @@ LARGEST_DIGIT_CODE = '9'.charCodeAt(0);
 */
 
 luhny = function(digits) {
-  var digit, index, odd, sum, _ref;
+  var DOUBLED_AND_SUMMED, digit, index, odd, sum, _ref;
+  DOUBLED_AND_SUMMED = [0, 2, 4, 6, 8, 1, 3, 5, 7, 9];
   sum = 0;
   odd = false;
   for (index = _ref = digits.length - 1; _ref <= 0 ? index <= 0 : index >= 0; _ref <= 0 ? index++ : index--) {
     digit = digits[index].charCodeAt(0) - SMALLEST_DIGIT_CODE;
-    if (odd) {
-      digit *= 2;
-      if (digit >= 10) {
-        sum += Math.floor(digit / 10);
-        digit = digit % 10;
-      }
-    }
-    sum += digit;
+    sum += odd ? DOUBLED_AND_SUMMED[digit] : digit;
     odd = !odd;
   }
   return sum % 10 === 0;

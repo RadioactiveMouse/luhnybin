@@ -2,6 +2,7 @@ MIN_CREDIT_LENGTH = 14
 MAX_CREDIT_LENGTH = 16
 SMALLEST_DIGIT_CODE = '0'.charCodeAt(0)
 LARGEST_DIGIT_CODE = '9'.charCodeAt(0)
+DOUBLED_AND_SUMMED = [0, 2, 4, 6, 8, 1, 3, 5, 7, 9]
 
 ###
  luhny
@@ -16,12 +17,7 @@ luhny = (digits) ->
 
 	for index in [digits.length - 1 .. 0]
 		digit = digits[index].charCodeAt(0) - SMALLEST_DIGIT_CODE
-		if odd
-			digit *= 2
-			if digit >= 10
-				sum += Math.floor digit / 10
-				digit = digit % 10
-		sum += digit
+		sum += if odd then DOUBLED_AND_SUMMED[digit] else digit
 		odd = !odd
 	
 	sum % 10 == 0
