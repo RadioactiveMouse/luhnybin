@@ -5,8 +5,8 @@ MIN_CREDIT_LENGTH = 14;
 MAX_CREDIT_LENGTH = 16;
 
 /*
- `luhny`
- -------
+ luhny
+ -----
  takes a string composed entirely of digits.
  returns true if the string passes the Luhn check, false otherwise.
 */
@@ -29,8 +29,8 @@ luhny = function(digitString) {
 };
 
 /*
- `hideFrom`
- ----------
+ hideFrom
+ --------
  takes a string, the nth digit to start hiding, and the number of digits to hide.
 
  returns the same string, except that `num` digits from the `nthDigit` are overwritten with Xs.
@@ -53,8 +53,8 @@ hideFrom = function(string, nthDigit, num) {
 };
 
 /*
- `mask`
- ------
+ mask
+ ----
  takes a string composed of digits, dashes, and spaces.
  returns the same string, except that any potentially valid credit card numbers are masked with Xs.
 */
@@ -86,30 +86,31 @@ mask = function(creditString) {
 };
 
 /*
- `hideCreditCards`
- -----------------
+ hideCreditCards
+ ---------------
  takes a string.
  returns the same string, except that any potentially valid credit card numbers are hidden.
 */
 
 hideCreditCards = function(input) {
-  var currChar, nthChar, output, potentialCardStack, potentialRegex, _ref;
+  var currChar, nthChar, output, potentialCardStack, potentialRegex, pumpCardStack, _ref;
   output = '';
   potentialCardStack = '';
-  potentialRegex = /[\d-\s]/;
+  potentialRegex = /[\d\-\s]/;
+  pumpCardStack = function() {
+    output += mask(potentialCardStack);
+    return potentialCardStack = '';
+  };
   for (nthChar = 0, _ref = input.length; 0 <= _ref ? nthChar < _ref : nthChar > _ref; 0 <= _ref ? nthChar++ : nthChar--) {
     currChar = input.charAt(nthChar);
     if (potentialRegex.test(currChar)) {
       potentialCardStack += currChar;
     } else {
-      if (potentialCardStack.length > 0) {
-        output += mask(potentialCardStack);
-        potentialCardStack = '';
-      }
+      if (potentialCardStack.length > 0) pumpCardStack();
       output += currChar;
     }
   }
-  if (potentialCardStack.length > 0) output += mask(potentialCardStack);
+  if (potentialCardStack.length > 0) pumpCardStack();
   return output;
 };
 

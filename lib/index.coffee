@@ -2,31 +2,30 @@ MIN_CREDIT_LENGTH = 14
 MAX_CREDIT_LENGTH = 16
 
 ###
- `luhny`
- -------
+ luhny
+ -----
  takes a string composed entirely of digits.
  returns true if the string passes the Luhn check, false otherwise.
 ###
 
 luhny = (digitString) ->
 	sum = 0
+
 	for index in [digitString.length - 1 .. 0]
 		digit = parseInt digitString.charAt(index), 10
-
 		if (digitString.length - 1 - index) % 2 != 0
 			digit *= 2
 			if digit >= 10
 				sum += Math.floor digit / 10
 				digit = digit % 10
-		
 		sum += digit
 	
 	sum % 10 == 0
 
 
 ###
- `hideFrom`
- ----------
+ hideFrom
+ --------
  takes a string, the nth digit to start hiding, and the number of digits to hide.
 
  returns the same string, except that `num` digits from the `nthDigit` are overwritten with Xs.
@@ -36,6 +35,7 @@ hideFrom = (string, nthDigit, num) ->
 	output = ''
 	n = 0
 	digitRegex = /\d/
+
 	for index in [0...string.length]
 		currChar = string.charAt(index)
 		if n < nthDigit + num && digitRegex.test currChar
@@ -47,8 +47,8 @@ hideFrom = (string, nthDigit, num) ->
 
 
 ###
- `mask`
- ------
+ mask
+ ----
  takes a string composed of digits, dashes, and spaces.
  returns the same string, except that any potentially valid credit card numbers are masked with Xs.
 ###
@@ -78,31 +78,29 @@ mask = (creditString) ->
 	creditString
 
 ###
- `hideCreditCards`
- -----------------
+ hideCreditCards
+ ---------------
  takes a string.
  returns the same string, except that any potentially valid credit card numbers are hidden.
 ###
 
 hideCreditCards = (input) ->
 	output = ''
-
 	potentialCardStack = ''
-	potentialRegex = /[\d-\s]/
+	potentialRegex = /[\d\-\s]/
+	pumpCardStack = () ->
+		output += mask potentialCardStack
+		potentialCardStack = ''
 
 	for nthChar in [0...input.length]
 		currChar = input.charAt nthChar
 		if potentialRegex.test currChar
 			potentialCardStack += currChar
 		else
-			if potentialCardStack.length > 0
-				output += mask potentialCardStack
-				potentialCardStack = ''
+			pumpCardStack() if potentialCardStack.length > 0
 			output += currChar
 	
-	if potentialCardStack.length > 0
-		output += mask potentialCardStack
-	
+	pumpCardStack() if potentialCardStack.length > 0
 	output
 
 
