@@ -27,11 +27,9 @@ luhny = (digitString) ->
 ###
  `hideFrom`
  ----------
- takes a string, the number of digits already hidden in the string, the nth digit to start hiding, 
- and the number of digits to hide.
+ takes a string, the nth digit to start hiding, and the number of digits to hide.
 
- returns the same string, except that `num` digits from the `nthDigit` (counting the previously-
- hidden digits) are overwritten with Xs.
+ returns the same string, except that `num` digits from the `nthDigit` are overwritten with Xs.
 ###
 
 hideFrom = (string, nthDigit, num) ->
