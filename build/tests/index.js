@@ -51,30 +51,10 @@ suite = vows.describe('Luhny Masking').addBatch({
       return luhnybin.luhny;
     },
     'should correctly identify strings that pass the Luhny test': function(luhny) {
-      return assert.isTrue(luhny(toArray('5678')));
+      return assert.isTrue(luhny([5, 6, 7, 8]));
     },
     'should not have false positives': function(luhny) {
-      return assert.isFalse(luhny(toArray('6789')));
-    },
-    'should accurately identify a potentially valid credit card number': function(luhny) {
-      return assert.isTrue(luhny(toArray(valid.pureDigits['14'].number)));
-    }
-  },
-  'The hideFrom function': {
-    topic: function() {
-      return luhnybin.hideFrom;
-    },
-    'should work on arrays made up entirely of digits': function(hideFrom) {
-      return assert.deepEqual(hideFrom(['1', '2', '3'], [[0, 3]]), ['X', 'X', 'X']);
-    },
-    'should work on arrays with non-digits': function(hideFrom) {
-      return assert.deepEqual(hideFrom(['a', '4', '5', 'c', 'd', '2'], [[0, 3]]), ['a', 'X', 'X', 'c', 'd', 'X']);
-    },
-    'should ignore digits before the range specified': function(hideFrom) {
-      return assert.deepEqual(hideFrom(['1', '2', '3', 'a', '4'], [[1, 3]]), ['1', 'X', 'X', 'a', 'X']);
-    },
-    'should ignore digits after the range specified': function(hideFrom) {
-      return assert.deepEqual(hideFrom(['1', '2', 'z', '9', '2'], [[0, 3]]), ['X', 'X', 'z', 'X', '2']);
+      return assert.isFalse(luhny([6, 7, 8, 9]));
     }
   },
   'The mask function': {

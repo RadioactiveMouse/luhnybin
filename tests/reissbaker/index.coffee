@@ -31,30 +31,11 @@ suite = vows.describe('Luhny Masking').addBatch
 		topic: () -> luhnybin.luhny
 
 		'should correctly identify strings that pass the Luhny test': (luhny) ->
-			assert.isTrue luhny toArray('5678')
+			assert.isTrue luhny [5, 6, 7, 8]
 
 		'should not have false positives': (luhny) ->
-			assert.isFalse luhny toArray('6789')
+			assert.isFalse luhny [6, 7, 8, 9]
 
-		'should accurately identify a potentially valid credit card number': (luhny) ->
-			assert.isTrue luhny toArray(valid.pureDigits['14'].number)
-	
-	'The hideFrom function':
-		topic: () -> luhnybin.hideFrom
-
-		'should work on arrays made up entirely of digits': (hideFrom) ->
-			assert.deepEqual hideFrom(['1', '2', '3'], [[0,3]]), ['X', 'X', 'X']
-
-		'should work on arrays with non-digits': (hideFrom) ->
-			assert.deepEqual hideFrom(['a', '4', '5', 'c', 'd', '2'], [[0,3]]), ['a', 'X', 'X', 'c', 'd', 'X']
-
-		'should ignore digits before the range specified': (hideFrom) ->
-			assert.deepEqual hideFrom(['1', '2', '3', 'a', '4'], [[1,3]]), ['1', 'X', 'X', 'a', 'X']
-
-		'should ignore digits after the range specified': (hideFrom) ->
-			assert.deepEqual hideFrom(['1', '2', 'z', '9', '2'], [[0,3]]), ['X', 'X', 'z', 'X', '2']
-
-	
 	'The mask function':
 		topic: () -> luhnybin.mask
 

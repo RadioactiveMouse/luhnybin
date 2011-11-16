@@ -1,64 +1,34 @@
-var LARGEST_DIGIT_CODE, MAX_CREDIT_LENGTH, MIN_CREDIT_LENGTH, SMALLEST_DIGIT_CODE, hideCreditCards, hideFrom, luhny, mask;
+var DOUBLED_AND_SUMMED, LARGEST_DIGIT_CODE, MASK_CHAR, MAX_CREDIT_LENGTH, MIN_CREDIT_LENGTH, SMALLEST_DIGIT_CODE, hideCreditCards, luhny, mask;
 
 MIN_CREDIT_LENGTH = 14;
 
 MAX_CREDIT_LENGTH = 16;
 
+MASK_CHAR = 'X';
+
 SMALLEST_DIGIT_CODE = '0'.charCodeAt(0);
 
 LARGEST_DIGIT_CODE = '9'.charCodeAt(0);
 
+DOUBLED_AND_SUMMED = [0, 2, 4, 6, 8, 1, 3, 5, 7, 9];
+
 /*
  luhny
  -----
- takes an array of single-character strings of digits.
- returns true if the string passes the Luhn check, false otherwise.
+ takes an array of digits.
+ returns true if the digits pass the Luhn check, false otherwise.
 */
 
 luhny = function(digits) {
-  var DOUBLED_AND_SUMMED, digit, index, odd, sum, _ref;
-  DOUBLED_AND_SUMMED = [0, 2, 4, 6, 8, 1, 3, 5, 7, 9];
+  var digit, index, odd, sum, _ref;
   sum = 0;
   odd = false;
   for (index = _ref = digits.length - 1; _ref <= 0 ? index <= 0 : index >= 0; _ref <= 0 ? index++ : index--) {
-    digit = digits[index].charCodeAt(0) - SMALLEST_DIGIT_CODE;
+    digit = digits[index];
     sum += odd ? DOUBLED_AND_SUMMED[digit] : digit;
     odd = !odd;
   }
   return sum % 10 === 0;
-};
-
-/*
- hideFrom
- --------
- takes an array of single-character strings, and an ordered array of pairs of the form [nthDigit, num].
-
- returns a clone of the array, except that `num` digits from the `nthDigit` are overwritten with Xs for 
- each pair.
-*/
-
-hideFrom = function(array, pairs) {
-  var code, currPairIndex, index, n, nthDigit, num, _ref;
-  n = 0;
-  array = array.slice(0);
-  if (pairs.length === 0) return array;
-  currPairIndex = 0;
-  nthDigit = pairs[currPairIndex][0];
-  num = pairs[currPairIndex][1];
-  for (index = 0, _ref = array.length; 0 <= _ref ? index < _ref : index > _ref; 0 <= _ref ? index++ : index--) {
-    code = array[index].charCodeAt(0);
-    if (code >= SMALLEST_DIGIT_CODE && code <= LARGEST_DIGIT_CODE) {
-      if (n >= nthDigit) array[index] = 'X';
-      n++;
-    }
-    while (n >= nthDigit + num) {
-      currPairIndex++;
-      if (currPairIndex >= pairs.length) return array;
-      nthDigit = pairs[currPairIndex][0];
-      num = pairs[currPairIndex][1];
-    }
-  }
-  return array;
 };
 
 /*
@@ -69,28 +39,32 @@ hideFrom = function(array, pairs) {
 */
 
 mask = function(creditArray) {
-  var amountToHide, delta, digits, nthDigit, pairs, subdigits, _ref, _ref2;
+  var code, delta, digits, i, index, indices, nthDigit, subdigits, _ref, _ref2, _ref3, _ref4;
   creditArray = creditArray.slice(0);
-  digits = creditArray.filter(function(character) {
-    return /\d/.test(character);
-  });
+  indices = [];
+  digits = [];
+  for (index = 0, _ref = creditArray.length; 0 <= _ref ? index < _ref : index > _ref; 0 <= _ref ? index++ : index--) {
+    code = creditArray[index].charCodeAt(0);
+    if (code >= SMALLEST_DIGIT_CODE && code <= LARGEST_DIGIT_CODE) {
+      digits.push(code - SMALLEST_DIGIT_CODE);
+      indices.push(index);
+    }
+  }
   if (digits.length < MIN_CREDIT_LENGTH) return creditArray;
-  pairs = [];
-  for (nthDigit = 0, _ref = digits.length - MIN_CREDIT_LENGTH; 0 <= _ref ? nthDigit <= _ref : nthDigit >= _ref; 0 <= _ref ? nthDigit++ : nthDigit--) {
-    for (delta = _ref2 = MAX_CREDIT_LENGTH - MIN_CREDIT_LENGTH; _ref2 <= 0 ? delta <= 0 : delta >= 0; _ref2 <= 0 ? delta++ : delta--) {
+  for (nthDigit = 0, _ref2 = digits.length - MIN_CREDIT_LENGTH; 0 <= _ref2 ? nthDigit <= _ref2 : nthDigit >= _ref2; 0 <= _ref2 ? nthDigit++ : nthDigit--) {
+    for (delta = _ref3 = MAX_CREDIT_LENGTH - MIN_CREDIT_LENGTH; _ref3 <= 0 ? delta <= 0 : delta >= 0; _ref3 <= 0 ? delta++ : delta--) {
       if (digits.length - nthDigit >= MIN_CREDIT_LENGTH + delta) {
         subdigits = digits.slice(nthDigit, nthDigit + MIN_CREDIT_LENGTH + delta);
         if (luhny(subdigits)) {
-          amountToHide = subdigits.length;
-          (function(nthDigit, amountToHide) {
-            pairs.push([nthDigit, amountToHide]);
-          })(nthDigit, amountToHide);
+          for (i = nthDigit, _ref4 = nthDigit + subdigits.length; nthDigit <= _ref4 ? i < _ref4 : i > _ref4; nthDigit <= _ref4 ? i++ : i--) {
+            creditArray[indices[i]] = MASK_CHAR;
+          }
           break;
         }
       }
     }
   }
-  return hideFrom(creditArray, pairs);
+  return creditArray;
 };
 
 /*
@@ -127,8 +101,6 @@ hideCreditCards = function(input) {
 */
 
 exports.luhny = luhny;
-
-exports.hideFrom = hideFrom;
 
 exports.mask = mask;
 

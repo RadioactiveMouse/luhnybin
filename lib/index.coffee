@@ -1,5 +1,7 @@
 MIN_CREDIT_LENGTH = 14
 MAX_CREDIT_LENGTH = 16
+MASK_CHAR = 'X'
+
 SMALLEST_DIGIT_CODE = '0'.charCodeAt(0)
 LARGEST_DIGIT_CODE = '9'.charCodeAt(0)
 DOUBLED_AND_SUMMED = [0, 2, 4, 6, 8, 1, 3, 5, 7, 9]
@@ -7,8 +9,8 @@ DOUBLED_AND_SUMMED = [0, 2, 4, 6, 8, 1, 3, 5, 7, 9]
 ###
  luhny
  -----
- takes an array of single-character strings of digits.
- returns true if the string passes the Luhn check, false otherwise.
+ takes an array of digits.
+ returns true if the digits pass the Luhn check, false otherwise.
 ###
 
 luhny = (digits) ->
@@ -16,43 +18,11 @@ luhny = (digits) ->
 	odd = false
 
 	for index in [digits.length - 1 .. 0]
-		digit = digits[index].charCodeAt(0) - SMALLEST_DIGIT_CODE
+		digit = digits[index]
 		sum += if odd then DOUBLED_AND_SUMMED[digit] else digit
 		odd = !odd
 	
 	sum % 10 == 0
-
-###
- hideFrom
- --------
- takes an array of single-character strings, and an ordered array of pairs of the form [nthDigit, num].
-
- returns a clone of the array, except that `num` digits from the `nthDigit` are overwritten with Xs for 
- each pair.
-###
-
-hideFrom = (array, pairs) ->
-	n = 0
-	array = array.slice 0
-	return array if pairs.length == 0
-
-	currPairIndex = 0
-	nthDigit = pairs[currPairIndex][0]
-	num = pairs[currPairIndex][1]
-
-	for index in [0...array.length]
-		code = array[index].charCodeAt(0)
-		if code >= SMALLEST_DIGIT_CODE && code <= LARGEST_DIGIT_CODE
-			array[index] = 'X' if n >= nthDigit
-			n++
-
-		while n >= nthDigit + num
-			currPairIndex++
-			return array if currPairIndex >= pairs.length
-			nthDigit = pairs[currPairIndex][0]
-			num = pairs[currPairIndex][1]
-
-	array
 
 ###
  mask
@@ -63,24 +33,26 @@ hideFrom = (array, pairs) ->
 
 mask = (creditArray) ->
 	creditArray = creditArray.slice 0
-	digits = creditArray.filter (character) ->
-		/\d/.test character
+	indices = []
+	digits = []
+	for index in [0...creditArray.length]
+		code = creditArray[index].charCodeAt(0)
+		if code >= SMALLEST_DIGIT_CODE && code <= LARGEST_DIGIT_CODE
+			digits.push code - SMALLEST_DIGIT_CODE
+			indices.push index
 	
 	return creditArray if digits.length < MIN_CREDIT_LENGTH
 	
-	pairs = []
 	for nthDigit in [0..digits.length - MIN_CREDIT_LENGTH]
 		for delta in [MAX_CREDIT_LENGTH - MIN_CREDIT_LENGTH .. 0]
 			if digits.length - nthDigit >= MIN_CREDIT_LENGTH + delta
 				subdigits = digits.slice nthDigit, nthDigit + MIN_CREDIT_LENGTH + delta
 				if luhny subdigits
-					amountToHide = subdigits.length
-					do (nthDigit, amountToHide) ->
-						pairs.push [nthDigit, amountToHide]
-						return
+					for i in [nthDigit...nthDigit + subdigits.length]
+						creditArray[indices[i]] = MASK_CHAR
 					break
 	
-	hideFrom creditArray, pairs
+	creditArray
 
 ###
  hideCreditCards
@@ -114,6 +86,5 @@ hideCreditCards = (input) ->
 ###
 
 exports.luhny = luhny
-exports.hideFrom = hideFrom
 exports.mask = mask
 exports.hideCreditCards = hideCreditCards
