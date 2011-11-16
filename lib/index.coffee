@@ -12,15 +12,17 @@ LARGEST_DIGIT_CODE = '9'.charCodeAt(0)
 
 luhny = (digitString) ->
 	sum = 0
+	odd = false
 
 	for index in [digitString.length - 1 .. 0]
 		digit = digitString.charCodeAt(index) - SMALLEST_DIGIT_CODE
-		if (digitString.length - 1 - index) % 2 != 0
+		if odd
 			digit *= 2
 			if digit >= 10
 				sum += Math.floor digit / 10
 				digit = digit % 10
 		sum += digit
+		odd = !odd
 	
 	sum % 10 == 0
 

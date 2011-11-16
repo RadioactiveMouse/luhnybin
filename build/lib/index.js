@@ -16,11 +16,12 @@ LARGEST_DIGIT_CODE = '9'.charCodeAt(0);
 */
 
 luhny = function(digitString) {
-  var digit, index, sum, _ref;
+  var digit, index, odd, sum, _ref;
   sum = 0;
+  odd = false;
   for (index = _ref = digitString.length - 1; _ref <= 0 ? index <= 0 : index >= 0; _ref <= 0 ? index++ : index--) {
     digit = digitString.charCodeAt(index) - SMALLEST_DIGIT_CODE;
-    if ((digitString.length - 1 - index) % 2 !== 0) {
+    if (odd) {
       digit *= 2;
       if (digit >= 10) {
         sum += Math.floor(digit / 10);
@@ -28,6 +29,7 @@ luhny = function(digitString) {
       }
     }
     sum += digit;
+    odd = !odd;
   }
   return sum % 10 === 0;
 };
