@@ -1,8 +1,12 @@
-var MAX_CREDIT_LENGTH, MIN_CREDIT_LENGTH, hideCreditCards, hideFrom, luhny, mask;
+var LARGEST_DIGIT_CODE, MAX_CREDIT_LENGTH, MIN_CREDIT_LENGTH, SMALLEST_DIGIT_CODE, hideCreditCards, hideFrom, luhny, mask;
 
 MIN_CREDIT_LENGTH = 14;
 
 MAX_CREDIT_LENGTH = 16;
+
+SMALLEST_DIGIT_CODE = '0'.charCodeAt(0);
+
+LARGEST_DIGIT_CODE = '9'.charCodeAt(0);
 
 /*
  luhny
@@ -37,13 +41,13 @@ luhny = function(digitString) {
 */
 
 hideFrom = function(string, nthDigit, num) {
-  var currChar, digitRegex, index, n, output, _ref;
+  var currChar, currCharCode, index, n, output, _ref;
   output = '';
   n = 0;
-  digitRegex = /\d/;
   for (index = 0, _ref = string.length; 0 <= _ref ? index < _ref : index > _ref; 0 <= _ref ? index++ : index--) {
     currChar = string.charAt(index);
-    if (n < nthDigit + num && digitRegex.test(currChar)) {
+    currCharCode = string.charCodeAt(index);
+    if (n < nthDigit + num && currCharCode <= LARGEST_DIGIT_CODE && currCharCode >= SMALLEST_DIGIT_CODE) {
       if (n >= nthDigit) currChar = 'X';
       n++;
     }

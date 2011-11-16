@@ -1,5 +1,7 @@
 MIN_CREDIT_LENGTH = 14
 MAX_CREDIT_LENGTH = 16
+SMALLEST_DIGIT_CODE = '0'.charCodeAt(0)
+LARGEST_DIGIT_CODE = '9'.charCodeAt(0)
 
 ###
  luhny
@@ -34,11 +36,11 @@ luhny = (digitString) ->
 hideFrom = (string, nthDigit, num) ->
 	output = ''
 	n = 0
-	digitRegex = /\d/
 
 	for index in [0...string.length]
-		currChar = string.charAt(index)
-		if n < nthDigit + num && digitRegex.test currChar
+		currChar = string.charAt index
+		currCharCode = string.charCodeAt index
+		if n < nthDigit + num && currCharCode <= LARGEST_DIGIT_CODE && currCharCode >= SMALLEST_DIGIT_CODE
 			currChar = 'X' if n >= nthDigit
 			n++
 		output += currChar
