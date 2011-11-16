@@ -75,16 +75,13 @@ hideFrom = function(array, pairs) {
 */
 
 mask = function(creditArray) {
-  var alreadyHidden, amountToHide, delta, digits, nMoreHidden, nthDigit, pairs, subdigits, _ref, _ref2;
+  var amountToHide, delta, digits, nthDigit, pairs, subdigits, _ref, _ref2;
   creditArray = creditArray.slice(0);
   digits = creditArray.filter(function(character) {
     return /\d/.test(character);
   });
   if (digits.length < MIN_CREDIT_LENGTH) return creditArray;
-  subdigits = [];
   pairs = [];
-  alreadyHidden = 0;
-  nMoreHidden = 0;
   for (nthDigit = 0, _ref = digits.length - MIN_CREDIT_LENGTH; 0 <= _ref ? nthDigit <= _ref : nthDigit >= _ref; 0 <= _ref ? nthDigit++ : nthDigit--) {
     for (delta = _ref2 = MAX_CREDIT_LENGTH - MIN_CREDIT_LENGTH; _ref2 <= 0 ? delta <= 0 : delta >= 0; _ref2 <= 0 ? delta++ : delta--) {
       if (digits.length - nthDigit >= MIN_CREDIT_LENGTH + delta) {
@@ -94,13 +91,10 @@ mask = function(creditArray) {
           (function(nthDigit, amountToHide) {
             pairs.push([nthDigit, amountToHide]);
           })(nthDigit, amountToHide);
-          alreadyHidden += amountToHide;
-          nMoreHidden += amountToHide;
           break;
         }
       }
     }
-    if (nMoreHidden > 0) nMoreHidden--;
   }
   return hideFrom(creditArray, pairs);
 };

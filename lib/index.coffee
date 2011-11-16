@@ -72,11 +72,7 @@ mask = (creditArray) ->
 	
 	return creditArray if digits.length < MIN_CREDIT_LENGTH
 	
-	subdigits = []
 	pairs = []
-	alreadyHidden = 0
-	nMoreHidden = 0
-
 	for nthDigit in [0..digits.length - MIN_CREDIT_LENGTH]
 		for delta in [MAX_CREDIT_LENGTH - MIN_CREDIT_LENGTH .. 0]
 			if digits.length - nthDigit >= MIN_CREDIT_LENGTH + delta
@@ -86,10 +82,7 @@ mask = (creditArray) ->
 					do (nthDigit, amountToHide) ->
 						pairs.push [nthDigit, amountToHide]
 						return
-					alreadyHidden += amountToHide
-					nMoreHidden += amountToHide
 					break
-		nMoreHidden-- if nMoreHidden > 0
 	
 	hideFrom creditArray, pairs
 
