@@ -37,23 +37,34 @@ luhny = function(digits) {
 /*
  hideFrom
  --------
- takes an array, the nth digit to start hiding, and the number of digits to hide.
- return a clone of the array, except that `num` digits from the `nthDigit` are overwritten with Xs.
+ takes an array of single-character strings, and an ordered array of pairs of the form [nthDigit, num].
+
+ return a clone of the array, except that `num` digits from the `nthDigit` are overwritten with Xs for 
+ each pair.
 */
 
-hideFrom = function(array, nthDigit, num) {
-  var clone, code, index, n, _ref;
+hideFrom = function(array, pairs) {
+  var code, currPairIndex, index, n, nthDigit, num, _ref;
   n = 0;
-  clone = array.slice(0);
+  array = array.slice(0);
+  if (pairs.length === 0) return array;
+  currPairIndex = 0;
+  nthDigit = pairs[currPairIndex][0];
+  num = pairs[currPairIndex][1];
   for (index = 0, _ref = array.length; 0 <= _ref ? index < _ref : index > _ref; 0 <= _ref ? index++ : index--) {
-    if (n >= nthDigit + num) return clone;
     code = array[index].charCodeAt(0);
     if (code >= SMALLEST_DIGIT_CODE && code <= LARGEST_DIGIT_CODE) {
-      if (n >= nthDigit) clone[index] = 'X';
+      if (n >= nthDigit) array[index] = 'X';
       n++;
     }
+    while (n >= nthDigit + num) {
+      currPairIndex++;
+      if (currPairIndex >= pairs.length) return array;
+      nthDigit = pairs[currPairIndex][0];
+      num = pairs[currPairIndex][1];
+    }
   }
-  return clone;
+  return array;
 };
 
 /*
@@ -64,13 +75,14 @@ hideFrom = function(array, nthDigit, num) {
 */
 
 mask = function(creditArray) {
-  var alreadyHidden, amountToHide, delta, digits, nMoreHidden, nthDigit, startingPoint, subdigits, _ref, _ref2;
+  var alreadyHidden, amountToHide, delta, digits, nMoreHidden, nthDigit, pairs, subdigits, _ref, _ref2;
   creditArray = creditArray.slice(0);
   digits = creditArray.filter(function(character) {
     return /\d/.test(character);
   });
   if (digits.length < MIN_CREDIT_LENGTH) return creditArray;
   subdigits = [];
+  pairs = [];
   alreadyHidden = 0;
   nMoreHidden = 0;
   for (nthDigit = 0, _ref = digits.length - MIN_CREDIT_LENGTH; 0 <= _ref ? nthDigit <= _ref : nthDigit >= _ref; 0 <= _ref ? nthDigit++ : nthDigit--) {
@@ -78,9 +90,10 @@ mask = function(creditArray) {
       if (digits.length - nthDigit >= MIN_CREDIT_LENGTH + delta) {
         subdigits = digits.slice(nthDigit, nthDigit + MIN_CREDIT_LENGTH + delta);
         if (luhny(subdigits)) {
-          amountToHide = subdigits.length - nMoreHidden;
-          startingPoint = nthDigit - alreadyHidden + nMoreHidden;
-          creditArray = hideFrom(creditArray, startingPoint, amountToHide);
+          amountToHide = subdigits.length;
+          (function(nthDigit, amountToHide) {
+            pairs.push([nthDigit, amountToHide]);
+          })(nthDigit, amountToHide);
           alreadyHidden += amountToHide;
           nMoreHidden += amountToHide;
           break;
@@ -89,7 +102,7 @@ mask = function(creditArray) {
     }
     if (nMoreHidden > 0) nMoreHidden--;
   }
-  return creditArray;
+  return hideFrom(creditArray, pairs);
 };
 
 /*

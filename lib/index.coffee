@@ -29,23 +29,34 @@ luhny = (digits) ->
 ###
  hideFrom
  --------
- takes an array of single-character strings, the nth digit to start hiding, and the number of digits to hide.
- return a clone of the array, except that `num` digits from the `nthDigit` are overwritten with Xs.
+ takes an array of single-character strings, and an ordered array of pairs of the form [nthDigit, num].
+
+ return a clone of the array, except that `num` digits from the `nthDigit` are overwritten with Xs for 
+ each pair.
 ###
 
-hideFrom = (array, nthDigit, num) ->
+hideFrom = (array, pairs) ->
 	n = 0
-	clone = array.slice 0
-	for index in [0...array.length]
-		if n >= nthDigit + num
-			return clone
+	array = array.slice 0
+	return array if pairs.length == 0
 
+	currPairIndex = 0
+	nthDigit = pairs[currPairIndex][0]
+	num = pairs[currPairIndex][1]
+
+	for index in [0...array.length]
 		code = array[index].charCodeAt(0)
 		if code >= SMALLEST_DIGIT_CODE && code <= LARGEST_DIGIT_CODE
-			clone[index] = 'X' if n >= nthDigit
+			array[index] = 'X' if n >= nthDigit
 			n++
 
-	clone
+		while n >= nthDigit + num
+			currPairIndex++
+			return array if currPairIndex >= pairs.length
+			nthDigit = pairs[currPairIndex][0]
+			num = pairs[currPairIndex][1]
+
+	array
 
 ###
  mask
@@ -62,6 +73,7 @@ mask = (creditArray) ->
 	return creditArray if digits.length < MIN_CREDIT_LENGTH
 	
 	subdigits = []
+	pairs = []
 	alreadyHidden = 0
 	nMoreHidden = 0
 
@@ -70,15 +82,16 @@ mask = (creditArray) ->
 			if digits.length - nthDigit >= MIN_CREDIT_LENGTH + delta
 				subdigits = digits.slice nthDigit, nthDigit + MIN_CREDIT_LENGTH + delta
 				if luhny subdigits
-					amountToHide = subdigits.length - nMoreHidden
-					startingPoint = nthDigit - alreadyHidden + nMoreHidden
-					creditArray = hideFrom creditArray, startingPoint, amountToHide
+					amountToHide = subdigits.length
+					do (nthDigit, amountToHide) ->
+						pairs.push [nthDigit, amountToHide]
+						return
 					alreadyHidden += amountToHide
 					nMoreHidden += amountToHide
 					break
 		nMoreHidden-- if nMoreHidden > 0
 	
-	creditArray
+	hideFrom creditArray, pairs
 
 ###
  hideCreditCards

@@ -43,16 +43,16 @@ suite = vows.describe('Luhny Masking').addBatch
 		topic: () -> luhnybin.hideFrom
 
 		'should work on arrays made up entirely of digits': (hideFrom) ->
-			assert.deepEqual hideFrom(['1', '2', '3'], 0, 3), ['X', 'X', 'X']
+			assert.deepEqual hideFrom(['1', '2', '3'], [[0,3]]), ['X', 'X', 'X']
 
 		'should work on arrays with non-digits': (hideFrom) ->
-			assert.deepEqual hideFrom(['a', '4', '5', 'c', 'd', '2'], 0, 3), ['a', 'X', 'X', 'c', 'd', 'X']
+			assert.deepEqual hideFrom(['a', '4', '5', 'c', 'd', '2'], [[0,3]]), ['a', 'X', 'X', 'c', 'd', 'X']
 
 		'should ignore digits before the range specified': (hideFrom) ->
-			assert.deepEqual hideFrom(['1', '2', '3', 'a', '4'], 1, 3), ['1', 'X', 'X', 'a', 'X']
+			assert.deepEqual hideFrom(['1', '2', '3', 'a', '4'], [[1,3]]), ['1', 'X', 'X', 'a', 'X']
 
 		'should ignore digits after the range specified': (hideFrom) ->
-			assert.deepEqual hideFrom(['1', '2', 'z', '9', '2'], 0, 3), ['X', 'X', 'z', 'X', '2']
+			assert.deepEqual hideFrom(['1', '2', 'z', '9', '2'], [[0,3]]), ['X', 'X', 'z', 'X', '2']
 
 	
 	'The mask function':
