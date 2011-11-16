@@ -59,8 +59,8 @@ hideFrom = function(array, nthDigit, num) {
 /*
  mask
  ----
- takes an array of strings composed of digits, dashes, and spaces.
- returns the a clone of the array, except that any potentially valid credit card numbers are masked with Xs.
+ takes an array of single-character strings composed of digits, dashes, and spaces.
+ returns a clone of the array, except that any potentially valid credit card numbers are masked with Xs.
 */
 
 mask = function(creditArray) {
