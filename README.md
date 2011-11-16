@@ -6,12 +6,12 @@ version manager to be the easiest way to install node versions, but any way will
 
 Modifying the CoffeeScript version
 ==================================
-1. Install the [CoffeeScript](http://jashkenas.github.com/coffee-script/) compiler, v1.1.3. 
-The easiest way to do this is by installing and using the [npm](http://npmjs.org/)
-package manager.
-2. Optionally, install [vows](http://vowsjs.org), v0.5.13; this is only necessary if you plan on
-running the Vows-based tests I made while writing the Luhny Bin solution. The easiest way to do this 
-is once again through [npm](http://npmjs.org).
+1. Install [npm](http://npmjs.org).
+1. `npm install -g coffee-script`
+2. Optionally, for using the [Vows](http://vowsjs.org)-based test suite: `npm install -g vows`
+3. After modifying the source: `cake build`
+4. To run the Vows-based test suite, if you installed Vows in (3): `npm test`
+6. To run the full test, just `./run.sh` as usual.
 
 Coding Challenge: The Luhny Bin
 ===============================
