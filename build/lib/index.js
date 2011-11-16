@@ -39,7 +39,7 @@ luhny = function(digits) {
 */
 
 mask = function(creditArray) {
-  var code, delta, digits, i, index, indices, nthDigit, subdigits, _ref, _ref2, _ref3, _ref4;
+  var code, digits, i, index, indices, nthDigit, offset, subdigits, _ref, _ref2, _ref3, _ref4;
   creditArray = creditArray.slice(0);
   indices = [];
   digits = [];
@@ -52,11 +52,11 @@ mask = function(creditArray) {
   }
   if (digits.length < MIN_CREDIT_LENGTH) return creditArray;
   for (nthDigit = 0, _ref2 = digits.length - MIN_CREDIT_LENGTH; 0 <= _ref2 ? nthDigit <= _ref2 : nthDigit >= _ref2; 0 <= _ref2 ? nthDigit++ : nthDigit--) {
-    for (delta = _ref3 = MAX_CREDIT_LENGTH - MIN_CREDIT_LENGTH; _ref3 <= 0 ? delta <= 0 : delta >= 0; _ref3 <= 0 ? delta++ : delta--) {
-      if (digits.length - nthDigit >= MIN_CREDIT_LENGTH + delta) {
-        subdigits = digits.slice(nthDigit, nthDigit + MIN_CREDIT_LENGTH + delta);
+    for (offset = _ref3 = nthDigit + MAX_CREDIT_LENGTH, _ref4 = nthDigit + MIN_CREDIT_LENGTH; _ref3 <= _ref4 ? offset <= _ref4 : offset >= _ref4; _ref3 <= _ref4 ? offset++ : offset--) {
+      if (digits.length >= offset) {
+        subdigits = digits.slice(nthDigit, offset);
         if (luhny(subdigits)) {
-          for (i = nthDigit, _ref4 = nthDigit + subdigits.length; nthDigit <= _ref4 ? i < _ref4 : i > _ref4; nthDigit <= _ref4 ? i++ : i--) {
+          for (i = nthDigit; nthDigit <= offset ? i < offset : i > offset; nthDigit <= offset ? i++ : i--) {
             creditArray[indices[i]] = MASK_CHAR;
           }
           break;

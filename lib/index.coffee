@@ -44,11 +44,11 @@ mask = (creditArray) ->
 	return creditArray if digits.length < MIN_CREDIT_LENGTH
 	
 	for nthDigit in [0..digits.length - MIN_CREDIT_LENGTH]
-		for delta in [MAX_CREDIT_LENGTH - MIN_CREDIT_LENGTH .. 0]
-			if digits.length - nthDigit >= MIN_CREDIT_LENGTH + delta
-				subdigits = digits.slice nthDigit, nthDigit + MIN_CREDIT_LENGTH + delta
+		for offset in [nthDigit + MAX_CREDIT_LENGTH .. nthDigit + MIN_CREDIT_LENGTH]
+			if digits.length >= offset
+				subdigits = digits.slice nthDigit, offset
 				if luhny subdigits
-					for i in [nthDigit...nthDigit + subdigits.length]
+					for i in [nthDigit...offset]
 						creditArray[indices[i]] = MASK_CHAR
 					break
 	
