@@ -29,7 +29,7 @@ luhny = (digits) ->
 ###
  hideFrom
  --------
- takes an array, the nth digit to start hiding, and the number of digits to hide.
+ takes an array of single-character strings, the nth digit to start hiding, and the number of digits to hide.
  return a clone of the array, except that `num` digits from the `nthDigit` are overwritten with Xs.
 ###
 
