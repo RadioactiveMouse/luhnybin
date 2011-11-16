@@ -14,7 +14,7 @@ luhny = (digitString) ->
 	sum = 0
 
 	for index in [digitString.length - 1 .. 0]
-		digit = parseInt digitString.charAt(index), 10
+		digit = digitString.charCodeAt(index) - SMALLEST_DIGIT_CODE
 		if (digitString.length - 1 - index) % 2 != 0
 			digit *= 2
 			if digit >= 10
