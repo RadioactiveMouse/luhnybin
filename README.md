@@ -69,3 +69,17 @@ This isn't a contest, but an innovative solution could score you interviews at S
 Once we have enough interesting submissions, I'll summarize the results in a followup [blog](http://corner.squareup.com/) post and open source our own Java-based implementation. In the mean time, if you enjoy working with talented people on challenging problems like this, email your résumé to <a href="mailto:luhnybin@squareup.com">luhnybin@squareup.com</a>.
 
 Good luck!
+
+
+Running the CoffeeScript version
+================================
+1. Install [node](http://nodejs.org/), v0.6.1. I find using the [n](https://github.com/visionmedia/n) 
+version manager to be the easiest way to do install node versions, but any way will do.
+2. Optionally, install the [CoffeeScript](http://jashkenas.github.com/coffee-script/) compiler, v1.1.3. 
+The easiest way to do this is by first installing and then using the [npm](http://npmjs.org/)
+package manager, but since `mask.sh` uses the compiled JS I've placed in the build folder, this 
+step is only necessary if you want to modify and recompile the code.
+3. Extremely optionally, install [vows](http://vowsjs.org), v0.5.13. This is only necessary if you plan on
+running the Vows-based tests I made while writing the Luhny Bin solution. The easiest way to do this is
+once again through [npm](http://npmjs.org).
+4. `./run.sh`

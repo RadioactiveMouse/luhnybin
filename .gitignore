@@ -2,6 +2,3 @@
 *.swp
 .DS_Store
 node_modules
-build/tests
-tests/reissbaker
-Cakefile
