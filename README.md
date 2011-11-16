@@ -9,9 +9,9 @@ Modifying the CoffeeScript version
 1. Install the [CoffeeScript](http://jashkenas.github.com/coffee-script/) compiler, v1.1.3. 
 The easiest way to do this is by installing and using the [npm](http://npmjs.org/)
 package manager.
-2. Optionally, install [vows](http://vowsjs.org), v0.5.13. This is only necessary if you plan on
-running the Vows-based tests I made while writing the Luhny Bin solution, or reusing the CoffeeScript
-Cakefile I used to compile everything. The easiest way to do this is once again through [npm](http://npmjs.org).
+2. Optionally, install [vows](http://vowsjs.org), v0.5.13 -- this is only necessary if you plan on
+running the Vows-based tests I made while writing the Luhny Bin solution. The easiest way to do this 
+is once again through [npm](http://npmjs.org).
 
 Coding Challenge: The Luhny Bin
 ===============================
