@@ -1,3 +1,3 @@
 #!/bin/sh
 
-coffee index.coffee
+node build/index.js
