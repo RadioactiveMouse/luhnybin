@@ -8,7 +8,7 @@ package manager, but since `mask.sh` uses the compiled JS I've placed in the bui
 step is only necessary if you want to modify and recompile the code.
 3. Optionally, install [vows](http://vowsjs.org), v0.5.13. This is only necessary if you plan on
 running the Vows-based tests I made while writing the Luhny Bin solution, or using the CoffeeScript
-Cakefile I use to build everything. The easiest way to do this is once again through [npm](http://npmjs.org).
+Cakefile I used to compile everything. The easiest way to do this is once again through [npm](http://npmjs.org).
 4. `./run.sh`
 
 Coding Challenge: The Luhny Bin
