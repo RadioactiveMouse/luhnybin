@@ -2,14 +2,14 @@
   "author": "Matt Baker",
   "name": "luhnybin",
   "description": "A CoffeeScript-based solution to Square's LuhnyBin challenge",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "repository": {
     "type": "git",
     "url": "git://github.com/reissbaker/luhnybin.git"
   },
   "main": "index.js",
   "scripts": {
-    "test": "vows build/tests/ --spec"
+    "test": "vows build/tests/ --spec",
 		"build": "cake build"
   },
   "engines": {
