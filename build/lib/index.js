@@ -39,7 +39,7 @@ luhny = function(digits) {
  --------
  takes an array of single-character strings, and an ordered array of pairs of the form [nthDigit, num].
 
- return a clone of the array, except that `num` digits from the `nthDigit` are overwritten with Xs for 
+ returns a clone of the array, except that `num` digits from the `nthDigit` are overwritten with Xs for 
  each pair.
 */
 
