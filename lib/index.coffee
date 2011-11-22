@@ -6,6 +6,7 @@ SMALLEST_DIGIT_CODE = '0'.charCodeAt(0)
 LARGEST_DIGIT_CODE = '9'.charCodeAt(0)
 DOUBLED_AND_SUMMED = [0, 2, 4, 6, 8, 1, 3, 5, 7, 9]
 
+
 ###
  luhny
  -----
@@ -23,6 +24,7 @@ luhny = (digits) ->
 		odd = !odd
 	
 	sum % 10 == 0
+
 
 ###
  mask
@@ -53,6 +55,7 @@ mask = (creditArray) ->
 					break
 	
 	creditArray
+
 
 ###
  hideCreditCards
